@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -26,26 +27,76 @@ namespace Logic.Service
             string loginUrl = baseUrlSteamCommunity + "openid/login";
 
             // Create a query string.
-            var query = HttpUtility.ParseQueryString(string.Empty);
-            query["openid.ns"] = "http://specs.openid.net/auth/2.0";
-            query["openid.mode"] = "checkid_setup";
-            query["openid.return_to"] = $"https://{hostUrl}/Session/AfterLogin";
-            query["openid.realm"] = $"https://{hostUrl}";
-            query["openid.identity"] = "http://specs.openid.net/auth/2.0/identifier_select";
-            query["openid.claimed_id"] = "http://specs.openid.net/auth/2.0/identifier_select";
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString["openid.ns"] = "http://specs.openid.net/auth/2.0";
+            queryString["openid.mode"] = "checkid_setup";
+            queryString["openid.return_to"] = $"https://{hostUrl}/Session/AfterLogin";
+            queryString["openid.realm"] = $"https://{hostUrl}";
+            queryString["openid.identity"] = "http://specs.openid.net/auth/2.0/identifier_select";
+            queryString["openid.claimed_id"] = "http://specs.openid.net/auth/2.0/identifier_select";
 
-            string parameters = query.ToString();
+            string parameters = queryString.ToString();
 
             loginUrl += $"?{parameters}";
 
             return loginUrl;
         }
 
-        // FOR AUTHENTICATING VALID DATA (AGAINST SPOOFING)
-        //public static async Task<bool> ValidateLoginData(string queryString)
-        //{
+        /// <summary>
+        /// Validate the data we got after the user logged into Steam (against spoofing).
+        /// </summary>
+        /// <param name="queryStringData"></param>
+        /// <returns>Returns true if the data has been correctly validated.</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static async Task<bool> ValidateSteamId(NameValueCollection queryStringData)
+        {
+            string authenticateUrl = baseUrlSteamCommunity + "openid/login";
 
-        //}
+            // Creating a new querystring with the data we got from Steam.
+            var queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString["openid.assoc_handle"] = queryStringData["openid.assoc_handle"];
+            queryString["openid.signed"] = queryStringData["openid.signed"];
+            queryString["openid.sig"] = queryStringData["openid.sig"];
+            queryString["openid.ns"] = queryStringData["openid.ns"];
+
+            var signed = queryString["openid.signed"].Split(','); // Split each item in signed and turn it into an array of items.
+
+            // Foreach item in signed get the value and use it with the right item after the value is trimmed for " symbols.
+            foreach (var item in signed)
+            {
+                var value = queryStringData[$"openid.{item}"];
+                queryString[$"openid.{item}"] = value.Trim('"');
+            }
+
+            queryString["openid.mode"] = "check_authentication"; // This is so Steam knows the data needs to be authenticated.
+
+            StringContent content = new StringContent(queryString.ToString());
+
+
+            // Set the headers of the request and the content.
+            steamClient.DefaultRequestHeaders.Add("method", "POST");
+            steamClient.DefaultRequestHeaders.Add("header", "Accept-language: en");
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            content.Headers.ContentLength = queryString.ToString().Length;
+
+            var response = await steamClient.PostAsync(authenticateUrl, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadAsStringAsync();
+
+                if (result.Contains("true"))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            throw new ArgumentException("No valid response");
+        }
 
 
         /// <summary>
@@ -66,7 +117,7 @@ namespace Logic.Service
             {
                 var jsonResult = await response.Content.ReadAsStringAsync();
 
-                dynamic result = JsonConvert.DeserializeObject(jsonResult);
+                dynamic result = JsonConvert.DeserializeObject<dynamic>(jsonResult);
                 result = result["response"]["players"][0];
 
                 Dictionary<string, string> userSummaries = new()

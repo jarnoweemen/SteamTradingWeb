@@ -1,5 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    
+    if (@TempData["Success"] != null)
+    {
+        <div class="success">@TempData["Success"]</div>
+    }
+    else if (@TempData["Failure"] != null)
+    {
+        <div class="failure">@TempData["Success"]</div>
+    }
 }
 
 <div class="text-center">
