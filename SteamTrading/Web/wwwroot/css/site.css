@@ -30,7 +30,7 @@ body {
     background-color: #DFF2BF;
 }
 
-.error {
+.failure {
     color: #D8000C;
     background-color: #FFBABA;
 }
