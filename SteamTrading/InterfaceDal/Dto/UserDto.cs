@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,13 +9,20 @@ namespace InterfaceDal.Dto
 {
     public class UserDto
     {
-        public int Id { get; set; }
+        [Key]
+        public int Id { get; private set; }
+        [Required]
         public long SteamId { get; private set; }
+        [Required]
         public string UserName { get; private set; }
+        [Required]
         public string ProfilePic { get; private set; }
+        [Required]
         public bool IsBot { get; private set; } = false;
+        [Required]
         public bool IsAdmin { get; private set; } = false;
-        public DateTime CreatedAt { get; } = DateTime.Now;  
+        [Required]
+        public DateTime CreatedAt { get; private set; } = DateTime.Now; 
 
         public UserDto(int id, long steamId, string userName, string profilePic)
         {
