@@ -1,7 +1,7 @@
-﻿using IntefaceLogic.Model;
+﻿using Infrastructure.Service;
+using IntefaceLogic.Model;
 using InterfaceDal.Interface;
 using InterfaceLogic.Inteface;
-using Logic.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
 using System.Web;
