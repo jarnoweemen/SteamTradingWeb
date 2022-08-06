@@ -1,17 +1,11 @@
-﻿using DAL.Context;
-using FactoryDal.Factory;
-using InterfaceDal.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InterfaceDal.Interface;
+using InterfaceLogic.Inteface;
 
-namespace Logic.Model
+namespace IntefaceLogic.Model
 {
     public class UserModel
     {
-        private readonly IUserDal _iUserDal;
+        private readonly IUserDal _userDal;
 
         public int Id { get; private set; }
         public long SteamId { get; private set; }
@@ -21,14 +15,13 @@ namespace Logic.Model
         public bool IsAdmin { get; private set; } = false;
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
-        public UserModel(long steamId, string userName, string profilePic, ApplicationDbContext dbContext, int id = 0)
+        public UserModel(long steamId, string userName, string profilePic, IUserDal userDal, int id = 0)
         {
             SteamId = steamId;
             UserName = userName;
             ProfilePic = profilePic;
 
-            FUserDa fUserDa = new(dbContext);
-            _iUserDal = fUserDa.GetUserDa();
+            _userDal = userDal;
         }
 
         /// <summary>
@@ -63,7 +56,7 @@ namespace Logic.Model
         /// <returns>Returns true if user exists.</returns>
         public bool CheckIfUserExists(long steamId)
         {
-            if (_iUserDal.CheckIfUserExists(steamId))
+            if (_userDal.CheckIfUserExists(steamId))
             {
                 return true;
             }

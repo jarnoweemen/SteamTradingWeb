@@ -1,4 +1,9 @@
 using DAL.Context;
+using DAL.DataAccess;
+using IntefaceLogic.Model;
+using InterfaceDal.Interface;
+using InterfaceLogic.Inteface;
+using Logic.Container;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IUserDal, UserDa>();
+builder.Services.AddScoped<IUserContainer, UserContainer>();
+
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddSession(options =>
     {
         options.IdleTimeout = TimeSpan.FromHours(1);

@@ -1,6 +1,6 @@
-﻿using DAL.Context;
-using Logic.Container;
-using Logic.Model;
+﻿using IntefaceLogic.Model;
+using InterfaceDal.Interface;
+using InterfaceLogic.Inteface;
 using Logic.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
@@ -10,11 +10,13 @@ namespace Web.Controllers
 {
     public class SessionController : Controller
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly IUserDal _userDal;
+        private readonly IUserContainer _userContainer;
 
-        public SessionController(ApplicationDbContext dbContext)
+        public SessionController(IUserDal userDal, IUserContainer userContainer)
         {
-            _dbContext = dbContext;
+            _userDal = userDal; 
+            _userContainer = userContainer;
         }
 
         // Get login url for Steam and redirect to that link.
@@ -48,10 +50,9 @@ namespace Web.Controllers
                 Dictionary<string, string> userSummaries = SteamService.GetUserSummaries(steamId).Result; // Get additional data for user login such as avatar and username.
 
                 // Create user if it doesn't exist yet.
-                UserContainer userContainer = new(_dbContext);
-                UserModel user = new(Convert.ToInt64(steamId), userSummaries["personaname"], userSummaries["avatarmedium"], _dbContext);
+                UserModel user = new(Convert.ToInt64(steamId), userSummaries["personaname"], userSummaries["avatarmedium"], _userDal);
 
-                bool isCreated = userContainer.CreateUser(user); // Try to create new user if it doesnt exist yet.
+                bool isCreated = _userContainer.CreateUser(user); // Try to create new user if it doesnt exist yet.
 
                 // Set all session data for the user.
                 HttpContext.Session.SetString("SteamID", steamId);
@@ -64,6 +65,13 @@ namespace Web.Controllers
             }
 
             TempData["Failure"] = "Something went wrong, if this error still occures after a few tries contact an administrator!";
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult Logout()
+        {
+
 
             return RedirectToAction("Index", "Home");
         }

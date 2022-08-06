@@ -1,24 +1,17 @@
-﻿using DAL.Context;
-using FactoryDal.Factory;
+﻿using IntefaceLogic.Model;
 using InterfaceDal.Dto;
 using InterfaceDal.Interface;
-using Logic.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using InterfaceLogic.Inteface;
 
 namespace Logic.Container
 {
-    public class UserContainer
+    public class UserContainer : IUserContainer
     {
-        private readonly IUserDal _iUserDal;
+        private readonly IUserDal _userDal;
 
-        public UserContainer(ApplicationDbContext dbContext)
+        public UserContainer(IUserDal userDal)
         {
-            FUserDa fUserDa = new(dbContext);
-            _iUserDal = fUserDa.GetUserDa();
+            _userDal = userDal;
         }
 
         /// <summary>
@@ -30,9 +23,9 @@ namespace Logic.Container
         {
             UserDto userDto = new(user.SteamId, user.UserName, user.ProfilePic, user.CreatedAt);
 
-            if (!_iUserDal.CheckIfUserExists(user.SteamId))
+            if (!user.CheckIfUserExists(user.SteamId))
             {
-                if (_iUserDal.CreateUser(userDto).Result) return true;
+                if (_userDal.CreateUser(userDto).Result) return true;
             }
 
             return false;
