@@ -1,4 +1,7 @@
-﻿using Logic.Service;
+﻿using DAL.Context;
+using Logic.Container;
+using Logic.Model;
+using Logic.Service;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Specialized;
 using System.Web;
@@ -7,6 +10,13 @@ namespace Web.Controllers
 {
     public class SessionController : Controller
     {
+        private readonly ApplicationDbContext _dbContext;
+
+        public SessionController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         // Get login url for Steam and redirect to that link.
         public IActionResult Login()
         {
@@ -36,6 +46,12 @@ namespace Web.Controllers
             if (SteamService.ValidateSteamId(queryStringData).Result)
             {
                 Dictionary<string, string> userSummaries = SteamService.GetUserSummaries(steamId).Result; // Get additional data for user login such as avatar and username.
+
+                // Create user if it doesn't exist yet.
+                UserContainer userContainer = new(_dbContext);
+                UserModel user = new(Convert.ToInt64(steamId), userSummaries["personaname"], userSummaries["avatarmedium"], _dbContext);
+
+                bool isCreated = userContainer.CreateUser(user); // Try to create new user if it doesnt exist yet.
 
                 // Set all session data for the user.
                 HttpContext.Session.SetString("SteamID", steamId);

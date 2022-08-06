@@ -65,6 +65,7 @@ namespace Logic.Service
             foreach (var item in signed)
             {
                 var value = queryStringData[$"openid.{item}"];
+                queryString[$"openid.{item}"] = value.Trim('"');
             }
 
             queryString["openid.mode"] = "check_authentication"; // This is so Steam knows the data needs to be authenticated.

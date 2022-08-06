@@ -18,44 +18,21 @@ namespace InterfaceDal.Dto
         [Required]
         public string ProfilePic { get; private set; }
         [Required]
-        public bool IsBot { get; private set; } = false;
+        public bool IsBot { get; private set; }
         [Required]
-        public bool IsAdmin { get; private set; } = false;
+        public bool IsAdmin { get; private set; }
         [Required]
-        public DateTime CreatedAt { get; private set; } = DateTime.Now; 
+        public DateTime CreatedAt { get; private set; }
 
-        public UserDto(int id, long steamId, string userName, string profilePic)
+        public UserDto(long steamId, string userName, string profilePic, DateTime createdAt, int id = 0, bool isBot = false, bool isAdmin = false)
         {
             Id = id;
             SteamId = steamId;
             UserName = userName;
             ProfilePic = profilePic;
-        }
-
-        /// <summary>
-        /// Set an account as a bot account.
-        /// </summary>
-        /// <returns>Returns false if the account is already a bot or the acccount is an admin account.</returns>
-        public bool SetBotAccount()
-        {
-            if (IsBot || IsAdmin) return false;
-
-            IsBot = true;   
-
-            return true;
-        }
-
-        /// <summary>
-        /// Set an account as a admin account.
-        /// </summary>
-        /// <returns>Returns false if the account is already an admin or the acccount is a bot account.</returns>
-        public bool SetAdminAccount()
-        {
-            if (IsBot || IsAdmin) return false;
-
-            IsAdmin = true;
-
-            return true;
+            IsBot = isBot;
+            IsAdmin = isAdmin;
+            CreatedAt = createdAt;
         }
     }
 }
