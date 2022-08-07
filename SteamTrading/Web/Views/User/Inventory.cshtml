@@ -1,0 +1,35 @@
+﻿@model IEnumerable<SkinInfoViewModel>
+
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+@if (Model != null)
+{
+
+    <div class="d-flex">
+        <div class="container-override-sidebar container-xxl">
+            <div>
+                <h2>Inventory</h2>
+            </div>
+
+        </div>
+        <div class="container-override-skin container-xxl">
+            <div class="card-group navbar-nav-scroll-override-skin navbar-nav-scroll">
+                @foreach (SkinInfoViewModel skin in Model)
+                {
+                    <div class="">
+                        <div class="card-override card">
+                            <div class="card-body">
+                                <img class="card-image-override card-img-top" src="@skin.IconUrl">
+                                <h5 class="card-title">@skin.Name</h5>
+                                <p class="card-text">Type: @skin.Type <br /> Buy: @skin.Buyable</p>
+                                <a href="#" class="btn btn-primary">Buy</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

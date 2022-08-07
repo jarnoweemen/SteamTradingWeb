@@ -11,5 +11,6 @@ namespace InterfaceDal.Interface
     {
         Task<bool> CreateUser(UserDto user);
         bool CheckIfUserExists(long steamId);
+        Task<UserDto?> GetUser(long steamId);
     }
 }

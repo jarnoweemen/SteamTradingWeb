@@ -1,7 +1,9 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-    
-    if (@TempData["Success"] != null)
+    ViewData["Title"] = "Home Page";    
+}
+
+<div class="container">
+    @if (@TempData["Success"] != null)
     {
         <div class="success">@TempData["Success"]</div>
     }
@@ -9,9 +11,9 @@
     {
         <div class="failure">@TempData["Failure"]</div>
     }
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 </div>
+

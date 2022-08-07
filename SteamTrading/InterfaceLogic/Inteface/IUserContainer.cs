@@ -10,5 +10,6 @@ namespace InterfaceLogic.Inteface
     public interface IUserContainer
     {
         bool CreateUser(UserModel userModel);
+        UserModel? GetUser(long steamId);
     }
 }

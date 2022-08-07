@@ -11,16 +11,17 @@ namespace IntefaceLogic.Model
         public long SteamId { get; private set; }
         public string UserName { get; private set; }
         public string ProfilePic { get; private set; }
+        public string ProfileUrl { get; private set; }  
         public bool IsBot { get; private set; } = false;
         public bool IsAdmin { get; private set; } = false;
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
-        public UserModel(long steamId, string userName, string profilePic, IUserDal userDal, int id = 0)
+        public UserModel(long steamId, string userName, string profilePic, string profileUrl, IUserDal userDal, int id = 0, bool isBot = false, bool isAdmin = false)
         {
             SteamId = steamId;
             UserName = userName;
             ProfilePic = profilePic;
-
+            ProfileUrl = profileUrl;
             _userDal = userDal;
         }
 

@@ -1,6 +1,7 @@
 ﻿using DAL.Context;
 using InterfaceDal.Dto;
 using InterfaceDal.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,22 @@ namespace DAL.DataAccess
             }
 
             return false;
+        }
+
+        public async Task<UserDto?> GetUser(long steamID)
+        {
+            try
+            {
+                UserDto userDto = await _dbContext.Users.Where(u => u.SteamId == steamID).SingleAsync();
+
+                return userDto;
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex.Message);
+            }
+
+            return null;
         }
     }
 }
