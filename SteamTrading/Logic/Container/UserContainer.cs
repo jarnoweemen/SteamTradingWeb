@@ -40,14 +40,22 @@ namespace Logic.Container
         {
             UserDto? userDto = _userDal.GetUser(steamId).Result;
 
-            if (userDto == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new(userDto.SteamId, userDto.UserName, userDto.ProfilePic, userDto.ProfileUrl, _userDal, userDto.Id, userDto.IsBot, userDto.IsAdmin);
-            }
+            if (userDto == null) return null;
+
+            return new(userDto.SteamId, userDto.UserName, userDto.ProfilePic, userDto.ProfileUrl, 
+                        _userDal, userDto.Id, userDto.IsBot, userDto.IsAdmin);
+        }
+
+        public IEnumerable<UserModel>? GetAllBots()
+        {
+            IEnumerable<UserDto>? userDtos = _userDal.GetAllBots().Result;
+
+            if (userDtos == null) return null;
+
+            IEnumerable<UserModel>? bots = userDtos.Select(i => new UserModel(i.SteamId, i.UserName, i.ProfilePic, i.ProfileUrl,
+                                                                                _userDal, i.Id, i.IsBot, i.IsAdmin));
+
+            return bots;
         }
     }
 }

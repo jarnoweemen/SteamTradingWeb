@@ -30,7 +30,7 @@ namespace Web.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-                IEnumerable<WeaponInfoModel>? inventoryItems = SteamService.GetUserInventoryByName(user.ProfileUrl).Result;
+                IEnumerable<SkinInfoModel>? inventoryItems = SteamService.GetUserInventoryByName(user.ProfileUrl).Result;
 
                 if (inventoryItems == null)
                 {
@@ -44,10 +44,10 @@ namespace Web.Controllers
                     Name = i.Name,
                     IconUrl = i.IconUrl,
                     Type = i.Type,
+                    ItemCategory = i.ItemCategory,
                     MarketRestriction = i.MarketRestriction,
                     Tradable = i.Tradable,
-                    Marketable = i.Marketable,
-                    Buyable = i.Buyable
+                    Marketable = i.Marketable
                 });
 
                 return View(inventoryItemsModel);

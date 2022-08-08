@@ -159,7 +159,7 @@ namespace Infrastructure.Service
         /// <param name="userName"></param>
         /// <returns>Returns a dictionary of the inventory items.</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static async Task<IEnumerable<WeaponInfoModel>?> GetUserInventoryByName(string profileUrl)
+        public static async Task<IEnumerable<SkinInfoModel>?> GetUserInventoryByName(string profileUrl)
         {
             string userInventoryUrl = profileUrl + $"inventory/json/730/2";
         
@@ -175,21 +175,24 @@ namespace Infrastructure.Service
 
                 result = result["rgDescriptions"];
                 
-                List<WeaponInfoModel> userInventory = new();
+                List<SkinInfoModel> userInventory = new();
                 int indexCount = 0;
 
                 foreach (dynamic items in result)
                 {
-                    userInventory.Add(new());
                     foreach (dynamic item in items)
                     {
+                        if (item.tags[1].category != "Weapon") break;
+
+                        userInventory.Add(new());
+
                         userInventory[indexCount].Name = item["name"];
                         userInventory[indexCount].IconUrl += item["icon_url"];
-                        userInventory[indexCount].Type = item["type"];
+                        userInventory[indexCount].Type = item.tags[0].name;
+                        userInventory[indexCount].ItemCategory = item.tags[1].category;
                         userInventory[indexCount].MarketRestriction = item["market_tradable_restriction"];
                         userInventory[indexCount].Tradable = item["tradable"];
                         userInventory[indexCount].Marketable = item["marketable"];
-                        userInventory[indexCount].Buyable = item["commodity"];
 
                         indexCount++;
                     }

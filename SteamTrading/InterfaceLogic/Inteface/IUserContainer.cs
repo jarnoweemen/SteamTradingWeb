@@ -11,5 +11,6 @@ namespace InterfaceLogic.Inteface
     {
         bool CreateUser(UserModel userModel);
         UserModel? GetUser(long steamId);
+        IEnumerable<UserModel>? GetAllBots();
     }
 }

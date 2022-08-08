@@ -23,13 +23,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Market" asp-action="Buy">Buy</a>
                         </li>
                     </ul>
                     @{
                         if (!string.IsNullOrEmpty(Context.Session.GetString("SteamID")))
                         {
                             <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Market" asp-action="Cart">
+                                        <img class="cart-image" src="/icons/Market/cart4.svg" />
+                                    </a>
+                                </li>
                                 <li class="nav-item">
                                     <img src="@Context.Session.GetString("ProfilePic")" />
                                 </li>

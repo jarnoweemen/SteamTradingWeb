@@ -64,7 +64,23 @@ namespace DAL.DataAccess
             }
             catch(Exception ex)
             {
-                Console.Write(ex.Message);
+                Console.WriteLine(ex.Message);
+            }
+
+            return null;
+        }
+
+        public async Task<IEnumerable<UserDto>?> GetAllBots()
+        {
+            try
+            {
+                IEnumerable<UserDto> userDtos = await _dbContext.Users.Where(u => u.IsBot == true).ToListAsync();
+
+                return userDtos;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
 
             return null;
