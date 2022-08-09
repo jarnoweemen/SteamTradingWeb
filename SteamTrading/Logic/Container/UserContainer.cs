@@ -7,9 +7,9 @@ namespace Logic.Container
 {
     public class UserContainer : IUserContainer
     {
-        private readonly IUserDal _userDal;
+        private readonly IUserDa _userDal;
 
-        public UserContainer(IUserDal userDal)
+        public UserContainer(IUserDa userDal)
         {
             _userDal = userDal;
         }

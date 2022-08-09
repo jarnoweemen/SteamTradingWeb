@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InterfaceDal.Interface
 {
-    public interface IUserDal
+    public interface IUserDa
     {
         Task<bool> CreateUser(UserDto user);
         bool CheckIfUserExists(long steamId);

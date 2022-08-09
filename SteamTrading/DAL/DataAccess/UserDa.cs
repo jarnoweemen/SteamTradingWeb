@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL.DataAccess
 {
-    public class UserDa : IUserDal
+    public class UserDa : IUserDa
     {
         private readonly ApplicationDbContext _dbContext;
 

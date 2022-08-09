@@ -11,7 +11,9 @@ namespace Infrastructure.Model
         public string? Name { get; set; }
         public string IconUrl { get; set; } = "https://steamcommunity-a.akamaihd.net/economy/image/";
         public string? Type { get; set; }
-        public string? ItemCategory { get; set; }   
+        public string? ItemCategory { get; set; }
+        public string? MarketHashName { get; set; }
+        public decimal Price { get; set; }
         public int MarketRestriction { get; set; }
         public bool Tradable { get; set; }
         public bool Marketable { get; set; }

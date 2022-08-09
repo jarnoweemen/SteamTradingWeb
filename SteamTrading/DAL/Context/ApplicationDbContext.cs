@@ -15,5 +15,6 @@ namespace DAL.Context
         }
 
         public DbSet<UserDto> Users { get; set; }   
+        public DbSet<CartItemDto> CartItems { get; set; }
     }
 }

@@ -13,8 +13,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IUserDal, UserDa>();
+builder.Services.AddScoped<IUserDa, UserDa>();
 builder.Services.AddScoped<IUserContainer, UserContainer>();
+builder.Services.AddScoped<ICartDa, CartDa>();
+builder.Services.AddScoped<ICartContainer, CartContainer>();
 
 builder.Services.AddControllersWithViews();
 

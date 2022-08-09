@@ -10,10 +10,10 @@ namespace Web.Controllers
 {
     public class SessionController : Controller
     {
-        private readonly IUserDal _userDal;
+        private readonly IUserDa _userDal;
         private readonly IUserContainer _userContainer;
 
-        public SessionController(IUserDal userDal, IUserContainer userContainer)
+        public SessionController(IUserDa userDal, IUserContainer userContainer)
         {
             _userDal = userDal; 
             _userContainer = userContainer;

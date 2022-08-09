@@ -5,7 +5,7 @@ namespace IntefaceLogic.Model
 {
     public class UserModel
     {
-        private readonly IUserDal _userDal;
+        private readonly IUserDa _userDal;
 
         public int Id { get; private set; }
         public long SteamId { get; private set; }
@@ -16,7 +16,7 @@ namespace IntefaceLogic.Model
         public bool IsAdmin { get; private set; } = false;
         public DateTime CreatedAt { get; private set; } = DateTime.Now;
 
-        public UserModel(long steamId, string userName, string profilePic, string profileUrl, IUserDal userDal, int id = 0, bool isBot = false, bool isAdmin = false)
+        public UserModel(long steamId, string userName, string profilePic, string profileUrl, IUserDa userDal, int id = 0, bool isBot = false, bool isAdmin = false)
         {
             SteamId = steamId;
             UserName = userName;

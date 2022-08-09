@@ -184,12 +184,18 @@ namespace Infrastructure.Service
                     {
                         if (item.tags[1].category != "Weapon") break;
 
+                        decimal? price = GetSkinPrice(item["market_hash_name"].ToString()).Result;
+
+                        if (price == null) price = 0;
+
                         userInventory.Add(new());
 
                         userInventory[indexCount].Name = item["name"];
                         userInventory[indexCount].IconUrl += item["icon_url"];
                         userInventory[indexCount].Type = item.tags[0].name;
                         userInventory[indexCount].ItemCategory = item.tags[1].category;
+                        userInventory[indexCount].MarketHashName = item["market_hash_name"];
+                        userInventory[indexCount].Price = (decimal)price;
                         userInventory[indexCount].MarketRestriction = item["market_tradable_restriction"];
                         userInventory[indexCount].Tradable = item["tradable"];
                         userInventory[indexCount].Marketable = item["marketable"];
@@ -202,6 +208,37 @@ namespace Infrastructure.Service
             }
 
             throw new ArgumentException("No valid response");
+        }
+
+        private static async Task<decimal?> GetSkinPrice(string marketHashName)
+        {
+            NameValueCollection queryString = HttpUtility.ParseQueryString(string.Empty);
+            queryString["appid"] = "730";
+            queryString["market_hash_name"] = marketHashName;
+            queryString["currency"] = "3";
+
+            string priceUrl = baseUrlSteamCommunity + $"market/priceoverview/?{queryString}";
+
+            var response = await steamClient.GetAsync(priceUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResult = await response.Content.ReadAsStringAsync();
+
+                dynamic? result = JsonConvert.DeserializeObject<dynamic>(jsonResult);
+
+                if (result == null) return null;
+
+                string medianPrice = result.median_price;
+
+                decimal price = Convert.ToDecimal(medianPrice.Replace(',', '.').Trim('€'));
+
+                if (price < 0.05m) price = 0.05m;
+
+                return price;
+            }
+
+            return null;
         }
     }
 }

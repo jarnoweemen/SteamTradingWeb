@@ -19,16 +19,34 @@
                 {
                     @foreach (SkinInfoViewModel skin in skins)
                     {
-                        <div class="">
-                            <div class="card-override card">
-                                <div class="card-body">
-                                    <img class="card-image-override card-img-top" src="@skin.IconUrl">
-                                    <h5 class="card-title">@skin.Name</h5>
-                                    <p class="card-text">Type: @skin.Type <br /> Category: @skin.ItemCategory</p>
-                                    <a href="#" class="btn btn-primary">Buy</a>
+                        @using (Html.BeginForm("Cart", "Market", FormMethod.Post))
+                        {
+                            <div class="">
+                                <div class="card-override card">
+                                    <div class="card-body">
+                                        <img class="card-image-override card-img-top" src="@skin.IconUrl">
+                                        <h5 class="card-title">@Html.DisplayFor(modelSkin => skin.Name)</h5>
+                                        <p class="card-text">
+                                            Type: @Html.DisplayFor(modelSkin => skin.Type) <br />
+                                            Category: @Html.DisplayFor(modelSkin => skin.ItemCategory) <br />
+                                            Price: @Html.DisplayFor(modelSkin => skin.Price)
+                                        </p>
+                                        <p>
+                                            @Html.HiddenFor(model => skin.IconUrl)
+                                            @Html.HiddenFor(model => skin.Name)
+                                            @Html.HiddenFor(model => skin.Type)
+                                            @Html.HiddenFor(model => skin.ItemCategory)
+                                            @Html.HiddenFor(model => skin.Price)
+                                            @Html.HiddenFor(model => skin.MarketHashName)
+                                            @Html.HiddenFor(model => skin.MarketRestriction)
+                                            @Html.HiddenFor(model => skin.Tradable)
+                                            @Html.HiddenFor(model => skin.Marketable)
+                                        </p>
+                                        <input class="btn btn-primary" type="submit" value="Buy">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     }
                 }
             </div>
