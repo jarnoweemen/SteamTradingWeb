@@ -10,12 +10,18 @@ namespace InterfaceDal.Dto
     public class CartItemDto
     {
         [Key]
-        public string? Name { get; set; }
+        public int Id { get; set; } 
+        [Required]
+        public string SkinId { get; set; }
+        [Required]
+        public string Name { get; set; }
         [Required]
         public decimal Price { get; set; }
 
-        public CartItemDto(string name, decimal price)
+        public CartItemDto(string skinId, string name, decimal price, int id = 0)
         {
+            Id = id;
+            SkinId = skinId;
             Name = name;
             Price = price;  
         }

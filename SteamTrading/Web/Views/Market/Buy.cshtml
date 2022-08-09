@@ -32,6 +32,7 @@
                                             Price: @Html.DisplayFor(modelSkin => skin.Price)
                                         </p>
                                         <p>
+                                            @Html.HiddenFor(model => skin.SkinId)
                                             @Html.HiddenFor(model => skin.IconUrl)
                                             @Html.HiddenFor(model => skin.Name)
                                             @Html.HiddenFor(model => skin.Type)

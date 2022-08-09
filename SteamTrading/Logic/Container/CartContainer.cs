@@ -23,7 +23,7 @@ namespace Logic.Container
         {
             if (item.Name == null) return false;
 
-            CartItemDto itemDto = new(item.Name, item.Price);
+            CartItemDto itemDto = new(item.SkinId, item.Name, item.Price);
 
             // 
             // Check if skin is already in someones cart.

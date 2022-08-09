@@ -8,6 +8,7 @@ namespace Infrastructure.Model
 {
     public class SkinInfoModel
     {
+        public string? SkinId { get; set; }
         public string? Name { get; set; }
         public string IconUrl { get; set; } = "https://steamcommunity-a.akamaihd.net/economy/image/";
         public string? Type { get; set; }

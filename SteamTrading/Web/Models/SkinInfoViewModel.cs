@@ -4,7 +4,7 @@ namespace Web.Models
 {
     public class SkinInfoViewModel
     {
-        public int Id { get; set; }
+        public string? SkinId { get; set; }
         [Display(Name = "Name")]
         public string? Name { get; set; }
         public string? IconUrl { get; set; }

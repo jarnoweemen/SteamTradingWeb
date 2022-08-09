@@ -42,6 +42,7 @@ namespace Web.Controllers
 
                 IEnumerable<SkinInfoViewModel> skinViewModel = skins.Select(i => new SkinInfoViewModel()
                 {
+                    SkinId = i.SkinId,
                     Name = i.Name,
                     IconUrl = i.IconUrl,
                     Type = i.Type,
@@ -67,7 +68,7 @@ namespace Web.Controllers
         [HttpPost]
         public IActionResult Cart(SkinInfoViewModel skin)
         {
-            if (skin.Name == null)
+            if (skin.Name == null || skin.SkinId == null)
             {
                 TempData["Failure"] = "Something went wrong when adding item to cart, please try again later.";
 
@@ -75,7 +76,7 @@ namespace Web.Controllers
             }
 
             // Add item to database cart table.
-            CartItemModel item = new(skin.Name, skin.Price);
+            CartItemModel item = new(skin.SkinId, skin.Name, skin.Price);
 
             if (_cartContainer.AddToCart(item))
             {

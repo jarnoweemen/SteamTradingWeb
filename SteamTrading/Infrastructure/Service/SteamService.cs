@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections.Specialized;
 using System.Net.Http.Headers;
 using System.Web;
@@ -190,6 +191,7 @@ namespace Infrastructure.Service
 
                         userInventory.Add(new());
 
+                        userInventory[indexCount].SkinId = items.Name;
                         userInventory[indexCount].Name = item["name"];
                         userInventory[indexCount].IconUrl += item["icon_url"];
                         userInventory[indexCount].Type = item.tags[0].name;

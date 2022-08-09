@@ -8,11 +8,15 @@ namespace InterfaceLogic.Model
 {
     public class CartItemModel
     {
-        public string? Name { get; set; }
+        public int Id { get; set; }
+        public string SkinId { get; set; }
+        public string Name { get; set; }
         public decimal Price { get; set; }
 
-        public CartItemModel(string name, decimal price)
+        public CartItemModel(string skinId, string name, decimal price, int id = 0)
         {
+            Id = id; 
+            SkinId = skinId;
             Name = name;
             Price = price;  
         }
